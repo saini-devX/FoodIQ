@@ -18,4 +18,4 @@ export const assets ={
     acc3
 }
 
-export const url = 'http://localhost:4000'
+export const url = 'https://foodiq-backend.onrender.com'
