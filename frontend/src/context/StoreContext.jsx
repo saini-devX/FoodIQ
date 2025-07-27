@@ -7,7 +7,7 @@ export const StoreContext = createContext(null);
 const StoreContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const url = "https://foodiq-backend.onrender.com"; // Keep the production URL
+  const url = "https://foodiq-backend.onrender.com"; 
 
   const [token, setToken] = useState("");
   const [food_list, setFood_List] = useState([]);
