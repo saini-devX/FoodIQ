@@ -7,7 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // ✅ Place Order Controller
 const placeOrder = async (req, res) => {
-  const frontend_url = "https://food-iq.onrender.com";
+  const frontend_url = "https://foodiq.vercel.app";
   const { items, amount, address } = req.body;
   const userId = req.userId;
 
