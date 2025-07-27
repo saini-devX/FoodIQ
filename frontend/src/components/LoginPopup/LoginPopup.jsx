@@ -1,3 +1,5 @@
+
+
 import React, { useContext } from "react";
 import "./LoginPopup.css";
 import { useState } from "react";
@@ -20,6 +22,11 @@ const LoginPopup = ({ setShowLogin }) => {
     setData((data) => ({ ...data, [name]: value }));
   };
 
+  // Password validation function
+  const isPasswordValid = (password) => {
+    return password.length >= 8 && /\d/.test(password);
+  };
+
   const onLogin = async (event) => {
     event.preventDefault();
     let newUrl = url;
@@ -36,7 +43,8 @@ const LoginPopup = ({ setShowLogin }) => {
       localStorage.setItem("token", response.data.token);
       setShowLogin(false);
     } else {
-      alert(response.data.message);
+      // Removed alert - you can handle other errors as needed
+      console.log(response.data.message);
     }
   };
 
@@ -81,9 +89,17 @@ const LoginPopup = ({ setShowLogin }) => {
             required
           />
         </div>
-        <button type="submit">
+        <button 
+          type="submit" 
+          disabled={!isPasswordValid(data.password)}
+        >
           {currState === "Sign Up" ? "Create account" : "Login"}
         </button>
+        {!isPasswordValid(data.password) && data.password.length > 0 && (
+          <p style={{ color: 'red', fontSize: '12px', marginTop: '0px' }}>
+            Please enter at least 8 digits in password
+          </p>
+        )}
         <div className="login-popup-condition">
           <input type="checkbox" required />
           <p>By continuing, i agree to the terms of use & privacy policy.</p>
