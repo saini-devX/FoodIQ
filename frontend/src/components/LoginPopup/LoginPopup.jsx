@@ -1,5 +1,4 @@
 
-
 import React, { useContext } from "react";
 import "./LoginPopup.css";
 import { useState } from "react";
@@ -10,6 +9,7 @@ import axios from "axios";
 const LoginPopup = ({ setShowLogin }) => {
   const { url, setToken } = useContext(StoreContext);
   const [currState, setCurrState] = useState("Login");
+  const [errorMessage, setErrorMessage] = useState("");
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -20,6 +20,8 @@ const LoginPopup = ({ setShowLogin }) => {
     const name = event.target.name;
     const value = event.target.value;
     setData((data) => ({ ...data, [name]: value }));
+    // Clear error message when user starts typing
+    if (errorMessage) setErrorMessage("");
   };
 
   // Password validation function
@@ -43,8 +45,17 @@ const LoginPopup = ({ setShowLogin }) => {
       localStorage.setItem("token", response.data.token);
       setShowLogin(false);
     } else {
-      // Removed alert - you can handle other errors as needed
-      console.log(response.data.message);
+      // Check the error message and set appropriate error
+      if (currState === "Login") {
+        if (response.data.message.toLowerCase().includes("password")) {
+          setErrorMessage("Invalid credentials");
+        } else if (response.data.message.toLowerCase().includes("email") || 
+                   response.data.message.toLowerCase().includes("user")) {
+          setErrorMessage("New user? Sign up");
+        } else {
+          setErrorMessage("Invalid credentials");
+        }
+      }
     }
   };
 
@@ -96,8 +107,13 @@ const LoginPopup = ({ setShowLogin }) => {
           {currState === "Sign Up" ? "Create account" : "Login"}
         </button>
         {!isPasswordValid(data.password) && data.password.length > 0 && (
-          <p style={{ color: 'red', fontSize: '12px', marginTop: '0px' }}>
-            Please enter at least 8 digits in password
+          <p style={{ color: 'red', fontSize: '12px', marginTop: '5px' }}>
+            Please enter 8 digits password
+          </p>
+        )}
+        {errorMessage && (
+          <p style={{ color: 'red', fontSize: '12px', marginTop: '5px' }}>
+            {errorMessage}
           </p>
         )}
         <div className="login-popup-condition">
