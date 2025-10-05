@@ -7,7 +7,7 @@ It features a clean UI, responsive design, and seamless deployment on Vercel.
 
 ## 🚀 Demo
 
-🔗 **Live App:** [FoodIQ on Vercel](https://foodiq.vercel.app)
+🔗 **Live App:** [FoodIQ](https://foodiq.vercel.app)
 
 ---
 
