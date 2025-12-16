@@ -1,53 +1,91 @@
-import express from "express"
-import cors from "cors"
-import { connectDB } from "./config/db.js"
-import foodRouter from "./routes/foodRoute.js"
-import userRouter from "./routes/userRoute.js"
-import 'dotenv/config'
-import cartRouter from "./routes/cartRoute.js"
-import orderRouter from "./routes/orderRoute.js"
+import express from "express";
+import cors from "cors";
+import { connectDB } from "./config/db.js";
+import foodRouter from "./routes/foodRoute.js";
+import userRouter from "./routes/userRoute.js";
+import cartRouter from "./routes/cartRoute.js";
+import orderRouter from "./routes/orderRoute.js";
+import "dotenv/config";
 
-
-const app = express()
+const app = express();
 const port = process.env.PORT || 4000;
 
-app.use(express.json())
-app.use(cors())
-app.use("/api/user", userRouter)
-app.use("/api/cart", cartRouter)
-app.use("/api/order", orderRouter)
+// middlewares
+app.use(express.json());
+app.use(cors());
 
-//db connection
-connectDB();
+// routes
+app.use("/api/user", userRouter);
+app.use("/api/cart", cartRouter);
+app.use("/api/order", orderRouter);
+app.use("/api/food", foodRouter);
+app.use("/images", express.static("uploads"));
 
-//api endpoints
-app.use("/api/food", foodRouter)
-app.use("/images", express.static('uploads'))
-
-app.get('/', (req, res) => {
-  res.send("API Working")
-})
-
+// health check (for cron)
 app.get("/health", (req, res) => {
   res.status(200).send("OK");
 });
 
-
-app.listen(port, () => {
-  console.log(`Server Started on http://localhost:${port}`)
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-  console.log(`✅ Server started on http://localhost:${port}`);
+// root
+app.get("/", (req, res) => {
+  res.send("API Working");
 });
+
+// db connection
+connectDB();
+
+// start server
+app.listen(port, () => {
+  console.log(`✅ Server started on port ${port}`);
+});
+
+
+
+// import express from "express"
+// import cors from "cors"
+// import { connectDB } from "./config/db.js"
+// import foodRouter from "./routes/foodRoute.js"
+// import userRouter from "./routes/userRoute.js"
+// import 'dotenv/config'
+// import cartRouter from "./routes/cartRoute.js"
+// import orderRouter from "./routes/orderRoute.js"
+
+
+// const app = express()
+// const port = process.env.PORT || 4000;
+
+// app.use(express.json())
+// app.use(cors())
+// app.use("/api/user", userRouter)
+// app.use("/api/cart", cartRouter)
+// app.use("/api/order", orderRouter)
+
+// //db connection
+// connectDB();
+
+// //api endpoints
+// app.use("/api/food", foodRouter)
+// app.use("/images", express.static('uploads'))
+
+// app.get('/', (req, res) => {
+//   res.send("API Working")
+// })
+
+// app.listen(port, () => {
+//   console.log(`Server Started on http://localhost:${port}`)
+// })
+
+
+
+
+
+
+
+
+
+
+
+
+
+//   console.log(`✅ Server started on http://localhost:${port}`);
+// });
